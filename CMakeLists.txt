@@ -2,25 +2,19 @@ cmake_minimum_required(VERSION 3.0.2)
 project(auv_homework)
 
 find_package(catkin REQUIRED COMPONENTS
+  cv_bridge
+  image_transport
   roscpp
   rospy
-  std_msgs
-  message_generation
-)
-
-add_message_files(
-  FILES
-  SensorData.msg
-)
-
-generate_messages(
-  DEPENDENCIES
+  sensor_msgs
   std_msgs
 )
-
 
 catkin_package(
-  CATKIN_DEPENDS message_runtime roscpp rospy std_msgs
+  #  INCLUDE_DIRS include
+  #  LIBRARIES ros_cv_homework
+  #  CATKIN_DEPENDS cv_bridge image_transport roscpp rospy sensor_msgs std_msgs
+  #  DEPENDS system_lib
 )
 
 include_directories(
@@ -29,15 +23,6 @@ include_directories(
 )
 
 catkin_install_python(PROGRAMS
-  scripts/talker.py
-  scripts/listener.py
+  scripts/img_processor.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
-
-add_executable(talker src/talker.cpp)
-target_link_libraries(talker ${catkin_LIBRARIES})
-add_dependencies(talker auv_homework_generate_messages_cpp)
-
-add_executable(listener src/listener.cpp)
-target_link_libraries(listener ${catkin_LIBRARIES})
-add_dependencies(listener auv_homework_generate_messages_cpp)
